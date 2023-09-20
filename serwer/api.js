@@ -32,7 +32,7 @@ var conn= mysql.createConnection({
 
       app.get("/kontynent/:kontynent", function (req, res) {
         var kontynent = req.params.kontynent;
-        const sql = 'SELECT nazwa, populacja, kontynent, stolica FROM panstwo WHERE kontynent = ?';
+        const sql = 'SELECT nazwa, populacja, kontynent, stolica, powierzchnia FROM panstwo WHERE kontynent = ?';
         conn.query(sql, [kontynent], (err, results, fields) => {
           if (err) {
             console.error(err);
@@ -48,7 +48,7 @@ var conn= mysql.createConnection({
 
       app.get("/populacja/:populacja", function (req, res) {
         var populacja = parseInt(req.params.populacja);
-        const sql = 'SELECT nazwa, populacja, kontynent, stolica FROM panstwo WHERE populacja >=  ?';
+        const sql = 'SELECT nazwa, populacja, kontynent, stolica, powierzchnia FROM panstwo WHERE populacja >=  ?';
         conn.query(sql, [populacja], (err, results, fields) => {
           if (err) {
             console.error(err);

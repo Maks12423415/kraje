@@ -28,41 +28,52 @@ var conn= mysql.createConnection({
       });
 
       axios.get("https://restcountries.com/v3.1/all").then((resp) => {
-        for (let i = 0; i < resp.data.length; i++) {
-          const kraj = resp.data[i];
-          console.log(`${kraj.name.common},${kraj.population},${kraj.region},${kraj.capital}`);
-      
-          if (kraj.capital) {
-            // Sprawdzanie, czy kraj już istnieje w bazie danych
-            const check = `SELECT * FROM panstwo WHERE nazwa = ?`;
-            const values = [kraj.name.common];
-      
-            conn.query(check, values, (err, results, fields) => {
+  for (let i = 0; i < resp.data.length; i++) {
+    const kraj = resp.data[i];
+    console.log(`${kraj.name.common},${kraj.population},${kraj.region},${kraj.capital},${kraj.area}`);
+
+    if (kraj.capital) {
+      // Sprawdzanie, czy kraj już istnieje w bazie danych
+      const check = `SELECT * FROM panstwo WHERE nazwa = ?`;
+      const values = [kraj.name.common];
+
+      // Deklaracja zmiennej insertUp na początku funkcji
+      const insertUp = `UPDATE panstwo SET powierzchnia='${kraj.area}' WHERE nazwa = "${kraj.name.common}"`;
+
+      conn.query(check, values, (err, results, fields) => {
+        if (err) {
+          console.error(err);
+        } else {
+          if (results.length === 0) {
+            // Kraj nie istnieje w bazie danych, więc go dodaj
+            const insertSQL = `INSERT INTO panstwo (nazwa, populacja, kontynent, stolica, powierzchnia) VALUES (?, ?, ?, ?, ?)`;
+            // Dodaj warunek, aby obsłużyć brak kraj.area
+            const area = kraj.area || 0;
+            const insertValues = [kraj.name.common, kraj.population, kraj.region, kraj.capital, area];
+
+            conn.query(insertSQL, insertValues, (err, results, fields) => {
               if (err) {
                 console.error(err);
               } else {
-                if (results.length === 0) {
-                  // Kraj nie istnieje w bazie danych, więc go dodaj
-                  const insertSQL = `INSERT INTO panstwo (nazwa, populacja, kontynent, stolica) VALUES (?, ?, ?, ?)`;
-                  const insertValues = [kraj.name.common, kraj.population, kraj.region, kraj.capital];
-      
-                  conn.query(insertSQL, insertValues, (err, results, fields) => {
-                    if (err) {
-                      console.error(err);
-                    } else {
-                      console.log("dodano");
-                    }
-                  });
-                } else {
-                  console.log("Kraj już istnieje w bazie danych, pomijam");
-                }
+                console.log("dodano");
               }
             });
-          } 
+          } else {
+            console.log("Kraj już istnieje w bazie danych, pomijam");
+            conn.query(insertUp, (err, results, fields) => {
+              if (err) {
+                console.error(err);
+              } else {
+                console.log("działa");
+              }
+            });
+          }
         }
       });
-      
-      
+    }
+  }
+});
+
 
 
 app.listen(port, () => {
