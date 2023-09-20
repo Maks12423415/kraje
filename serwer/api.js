@@ -61,6 +61,22 @@ var conn= mysql.createConnection({
         });
       });
 
+      app.get("/kontynenty", function (req, res) {
+        const sql = 'SELECT DISTINCT kontynent FROM panstwo';
+        conn.query(sql, (err, results, fields) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send('Błąd bazy danych');
+            return;
+          }
+          console.log(results);
+          // Wysłać wyniki jako odpowiedź na żądanie HTTP.
+          res.json(results);
+        });
+      });
+
+
+
       app.listen(port, () => {
         console.log(`Serwer działa na porcie ${port}`);
       });

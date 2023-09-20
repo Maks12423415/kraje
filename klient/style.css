@@ -1,0 +1,25 @@
+#body{
+    margin: 0px;
+}
+
+#full{
+    display: grid;
+    grid-template-rows: 25vh 75vh;
+
+}
+
+
+#menu{
+    display: flex;
+    background-color: blue;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#info{
+    display: flex;
+    background-color: blueviolet;
+    align-items: center;
+    justify-content: center;
+}
