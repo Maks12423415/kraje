@@ -32,7 +32,7 @@ var conn= mysql.createConnection({
 
       app.get("/kontynent/:kontynent", function (req, res) {
         var kontynent = req.params.kontynent;
-        const sql = 'SELECT nazwa FROM panstwo WHERE kontynent = ?';
+        const sql = 'SELECT nazwa, populacja, stolica FROM panstwo WHERE kontynent = ?';
         conn.query(sql, [kontynent], (err, results, fields) => {
           if (err) {
             console.error(err);
