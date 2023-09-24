@@ -7,7 +7,11 @@ async function fetchContinents() {
 
     continentsData = json;
 
+<<<<<<< HEAD
     const checkboxContainer = document.getElementById("checkbox");
+=======
+    const checkboxContainer = document.getElementById("checkbox-container");
+>>>>>>> 5e4f5143882fcaf2e225828d27616083a53b765f
 
     json.forEach((continent, index) => {
       const checkBox = document.createElement("input");
@@ -25,11 +29,19 @@ async function fetchContinents() {
       checkboxContainer.appendChild(label);
     });
   } catch (error) {
+<<<<<<< HEAD
     console.error(
       "Wystąpił błąd podczas pobierania danych o kontynentach:",
       error
     );
+=======
+    console.error("Wystąpił błąd podczas pobierania danych o kontynentach:", error);
+>>>>>>> 5e4f5143882fcaf2e225828d27616083a53b765f
   }
 }
 
 fetchContinents();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5e4f5143882fcaf2e225828d27616083a53b765f
